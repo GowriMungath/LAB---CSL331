@@ -1,53 +1,50 @@
 #include<stdio.h>
 #include<stdlib.h>
-int f[200],ch,i,j,ind[50],p,n,a,st,len,k;
+int ch,f[200],i,st,len,p,ind[50],n,a,k,c;
 void sequential(int f[])
 {
-    int count = 0;
-    printf("Enter the starting block and the length of the file: ");
-    scanf("%d%d", &st, &len);
-    for (i=st; i<(st+len); i++)
+    int flag=0;
+    printf("Enter starting block and length of file: ");
+    scanf("%d%d",&st,&len);
+    for(i=st;i<(st+len);i++)
     {
-        if (f[i] == 0)
+        if(f[i]==0)
         {
-            count++;
+            flag++;
         }
     }
-    if(len == count)
+    if(flag==len)
     {
-        for (int j=st; j<(st+len); j++)
+        for(i=st;i<(st+len);i++)
         {
-            if (f[j] == 0)
-            {
-                f[j] = 1;
-                printf("%d->%d\n",j,f[j]);
-            }
+            f[i]=1;
+            printf("%d->%d\n",i,f[i]);
         }
-        if (j != (st+len-1))
-            printf("The file is allocated to the disk\n");
+        if(i!=(st+len-1))
+        {
+            printf("File has been allocated\n");
+        }
     }
     else
     {
-        printf("The file is not allocated to the disk as some blocks are already allocated!\n");
+        printf("File not allocated as block is already occupied!\n");
     }
 }
 void indexed(int f[])
 {
-    int ind[i],n;
     X:
-    printf("Enter the index block: ");
+    printf("Enter Index Block: ");
     scanf("%d",&p);
     if(f[p]==1)
     {
-        printf("Block already allocated\n!");
+        printf("Block already allocated!\n");
         goto X;
     }
     else
     {
-        f[p]=1;
-        printf("Enter number of files on index: ");
+        printf("Enter number of files: ");
         scanf("%d",&n);
-        printf("Enter file blocks: ");
+        printf("Enter files: ");
         for(i=0;i<n;i++)
         {
             scanf("%d",&ind[i]);
@@ -63,37 +60,34 @@ void indexed(int f[])
         for(i=0;i<n;i++)
         {
             f[ind[i]]=1;
-        }
-        for(i=0;i<n;i++)
-        {
             printf("%d->%d:%d\n",p,ind[i],f[ind[i]]);
         }
     }
 }
 void linked(int f[])
 {
-    printf("How many blocks are already allocated? ");
+    printf("Enter number of blocks that are already allocated: ");
     scanf("%d",&n);
-    printf("Enter the blocks: ");
+    printf("Enter blocks: ");
     for(i=0;i<n;i++)
     {
         scanf("%d",&a);
         f[a]=1;
     }
-    printf("Enter the starting block and the length of the file: ");
-    scanf("%d%d", &st, &len);
+    printf("Enter starting block and length of file: ");
+    scanf("%d%d",&st,&len);
     k=len;
     for(i=st;i<(st+k);i++)
     {
-        if(f[i]==1)
+        if(f[i]==0)
         {
-            printf("File block already allocated!\n");
-            k++;
+            f[i]=1;
+            printf("%d->%d\n",i,f[i]);
         }
         else
         {
-            f[i] = 1;
-            printf("%d->%d\n",i,f[i]);
+            printf("Block already allocated!\n");
+            k++;
         }
     }
 }
@@ -103,10 +97,10 @@ int main()
     {
         f[i]=0;
     }
-    int c=1;
+    c=1;
     while(c==1)
     {
-        printf("\n1.Sequential File Allocation\n2.Indexed File Allocation\n3.Linked File Allocation\nEnter your choice: ");
+        printf("Sequential File Allocation\nIndexed File Allocation\nLinked File Allocation\nEnter your choice: ");
         scanf("%d",&ch);
         switch(ch)
         {
@@ -122,5 +116,7 @@ int main()
             default:
             exit(0);
         }
+        printf("Continue? Yes-1/No-0: ");
+        scanf("%d",&c);
     }
 }
